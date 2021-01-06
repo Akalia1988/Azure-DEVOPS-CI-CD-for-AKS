@@ -45,22 +45,34 @@ Azure Managed Services
 
 Azure DevOps Build Pipeline for Continuous integration
 Build pipeline for Kubernetes usually contains the steps that will fetch the code, build the Docker image, push that image to your Docker repository and then publish the artifacts.
-1- Get sources from your favorite code repository, Microsoft supports most of the options with ready interfaces for even authenticating and choosing the right repository and default branch.
-2- Define the agent you want to run for building your code (Windows agent, Ubuntu agent etc.).
-3- Choose the Docker “Build an image” task, choose the Azure container registry with Azure subscription and the name of the registry in case you want to use Azure one (Or you can configure any outside public registry), then choose the docker file name.
+
+1. Get sources from your favorite code repository, Microsoft supports most of the options with ready interfaces for even authenticating and choosing the right repository and default branch.
+
+2. Define the agent you want to run for building your code (Windows agent, Ubuntu agent etc.).
+
+3. Choose the Docker “Build an image” task, choose the Azure container registry with Azure subscription and the name of the registry in case you want to use Azure one (Or you can configure any outside public registry), then choose the docker file name.
+
 ![image](https://user-images.githubusercontent.com/58148717/103788113-18bc0a80-5004-11eb-8165-47bbae6b65de.png)
-4- Choose the task for docker image push. Also provide Azure container registry information where we can upload docker images for further AKS deployment process.
+
+4. Choose the task for docker image push. Also provide Azure container registry information where we can upload docker images for further AKS deployment process.
+
 ![image](https://user-images.githubusercontent.com/58148717/103788236-37ba9c80-5004-11eb-83fe-331f1ccf5895.png)
-5- Choose the “Copy files” step to copy the files to an artifact staging directory and we will only need to copy the deployment file that we will talk about next in the deployment section.
+
+5. Choose the “Copy files” step to copy the files to an artifact staging directory and we will only need to copy the deployment file that we will talk about next in the deployment section.
+
 ![image](https://user-images.githubusercontent.com/58148717/103788307-4ef98a00-5004-11eb-9c00-02207116f423.png)
-6- Choose Publish build artifacts step
+
+6. Choose Publish build artifacts step
 
 Azure DevOps Release Pipeline for Continuous Deployment
 The release pipeline usually used to put the correct build to its correct running environment.
 In our scenario usually, that starts by reading the Artifacts from the build pipeline and fires one of the pipeline stages according to the build code branch. 
 One stage will be enough with only two tasks, one of them to copy the building code to the deployment yaml file so we can choose the right docker version for the release, and there is a ready pre-defined step for that purpose which is “Replace Tokens”. All you need to do is to select the deployment file from the Artifacts using “Root Directory” and “Target files” fields.
+
 ![image](https://user-images.githubusercontent.com/58148717/103788435-718ba300-5004-11eb-8cf1-ac1008361aac.png)
+
 Next you can use “Deploy to Kubernetes” ready task from the templates, that task actually will only run Kubectl apply command on your deployment file. From the “Configuration file” field you can choose the deployment file you will use in that command.
+
 ![image](https://user-images.githubusercontent.com/58148717/103788515-85cfa000-5004-11eb-9c29-1e2636aa0304.png)
 
 we need to write our deployment file
