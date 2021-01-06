@@ -66,7 +66,9 @@ Build pipeline for Kubernetes usually contains the steps that will fetch the cod
 
 Azure DevOps Release Pipeline for Continuous Deployment
 The release pipeline usually used to put the correct build to its correct running environment.
+
 In our scenario usually, that starts by reading the Artifacts from the build pipeline and fires one of the pipeline stages according to the build code branch. 
+
 One stage will be enough with only two tasks, one of them to copy the building code to the deployment yaml file so we can choose the right docker version for the release, and there is a ready pre-defined step for that purpose which is “Replace Tokens”. All you need to do is to select the deployment file from the Artifacts using “Root Directory” and “Target files” fields.
 
 ![image](https://user-images.githubusercontent.com/58148717/103788435-718ba300-5004-11eb-8cf1-ac1008361aac.png)
@@ -79,7 +81,8 @@ we need to write our deployment file
 
 Aks-manifestfile.yaml
 
-So this deployment file actually is creating a service for our code (If it’s not being already created), we choose the name of the service and the port which the service will work on. Secondly, the deployment file will define a deployment in the AKS mesh that will take the last Docker image and deploy it to the mesh (After we inject the build id with the previous step).
+So this deployment file actually is creating a service for our code (If it’s not being already created), we choose the name of the service and the port which the service will work on. 
+Secondly, the deployment file will define a deployment in the AKS mesh that will take the last Docker image and deploy it to the mesh (After we inject the build id with the previous step).
 
 Note: we set up our CI/CD pipeline and set up deployment on our K8, but that doesn’t mean that our K8 will be able to access the containers registry. We need to configure ACR integration, we can use the next command to support that:
 
